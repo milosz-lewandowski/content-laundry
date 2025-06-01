@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProcessFactory {
-    private static final Path TOOL_PATH = Paths.get(System.getProperty("user.dir"), "tools", "yt-dlp.exe");
-    private static final String TOOL_COMMAND = TOOL_PATH.toString();
+    private static final Path TOOL_PATH_MAC = Paths.get(System.getProperty("user.dir"), "tools", "mac", "yt-dlp_macos");
+    private static final String TOOL_COMMAND_MAC = TOOL_PATH_MAC.toString();
 
     public static ProcessBuilder buildProcessCommand(String url, Formats format, AdvancedOptions advancedOptions) {
         List<String> command = new ArrayList<>();
-        command.add(TOOL_COMMAND); // tool command
+        command.add(TOOL_COMMAND_MAC); // tool command
 
         // adds format specific download & conversion options
         if (format.audioFormat) {
@@ -90,7 +90,7 @@ public class ProcessFactory {
     private static ProcessBuilder getMP3proc(String url) {
         Formats format = Formats.MP3;
         return new ProcessBuilder(
-                TOOL_COMMAND,
+                TOOL_COMMAND_MAC,
                 "--extract-audio",
                 "--audio-format", format.value,
                 "--audio-quality", "0",
@@ -106,7 +106,7 @@ public class ProcessFactory {
     private static ProcessBuilder getWAVproc(String url) {
         Formats format = Formats.WAV;
         return new ProcessBuilder(
-                TOOL_COMMAND,
+                TOOL_COMMAND_MAC,
                 "--extract-audio",
                 "--audio-format", format.value,
                 "--audio-quality", "0",
@@ -121,7 +121,7 @@ public class ProcessFactory {
     private static ProcessBuilder getMP4proc(String url) {
         Formats format = Formats.MP4;
         return new ProcessBuilder(
-                TOOL_COMMAND,
+                TOOL_COMMAND_MAC,
                 "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4",
                 "--merge-output-format", format.value,
                 "--embed-thumbnail",
