@@ -26,7 +26,7 @@ jobs:
         run: ./gradlew jpackage
 
       - name: 📦 Upload .dmg artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.3
         with:
           name: ContentLaundry-dmg
           path: build/jpackage/*.dmg
