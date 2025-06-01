@@ -75,9 +75,18 @@ tasks.named("jpackage") {
     dependsOn("copyMacTools")
 
     doLast {
-        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            exec {
-                commandLine("chmod", "+x", "$buildDir/jpackage/ContentLaundry/tools/mac/*")
+        if (System.getProperty("os.name").lowercase().contains("mac")) {
+            val macToolsDir = File("$buildDir/jpackage/ContentLaundry/tools/mac")
+            if (macToolsDir.exists() && macToolsDir.isDirectory) {
+                macToolsDir.listFiles()?.forEach { file ->
+                    if (file.isFile) {
+                        exec {
+                            commandLine("chmod", "+x", file.absolutePath)
+                        }
+                    }
+                }
+            } else {
+                println("⚠️ No mac tools found at expected location: $macToolsDir")
             }
         }
     }
