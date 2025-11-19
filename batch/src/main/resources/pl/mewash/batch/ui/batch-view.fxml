@@ -20,8 +20,17 @@
 
         <HBox spacing="10" alignment="CENTER_LEFT">
             <Label text="%label.save_to_dir"/>
-            <TextField fx:id="pathField" promptText="Select directory to save files..." prefWidth="300"/>
+            <TextField fx:id="pathField" promptText="Select directory to save files..."
+                       prefWidth="300"/>
             <Button text="%button.browse_dirs" onAction="#handleBrowse"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+            <CheckBox fx:id="extractSingleIfPlaylistCheckbox"
+                      text="%label.ignore_playlist">
+                <tooltip>
+                    <Tooltip text="%tooltip.ignore_playlist"/>
+                </tooltip>
+            </CheckBox>
         </HBox>
 
         <HBox spacing="10" alignment="CENTER">

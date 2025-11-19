@@ -42,6 +42,7 @@ public class BatchController implements OnCloseHandler {
 
     // URLs input text window
     @FXML private TextArea urlInput;
+    @FXML private CheckBox extractSingleIfPlaylistCheckbox;
 
     // Path directory selection
     @FXML private TextField pathField;
@@ -120,6 +121,8 @@ public class BatchController implements OnCloseHandler {
         batchButton.disableProperty().bind(Bindings
             .createBooleanBinding(() -> processingState.get().isButtonDisabled(), processingState));
 
+        extractSingleIfPlaylistCheckbox.setSelected(true);
+
         fileOnlyRadio.setSelected(true);
         groupByContentRadio.setSelected(true);
         addDateCheckbox.setSelected(false);
@@ -180,7 +183,8 @@ public class BatchController implements OnCloseHandler {
         Optional<String> urlInput = getUrlInputWithEmptyCheck();
         if (urlInput.isEmpty()) return;
 
-        List<String> refinedUrlList = refineInputToUrlListWithDuplicatesCheck(urlInput.get());
+        boolean ignorePlaylists = extractSingleIfPlaylistCheckbox.isSelected();
+        List<String> refinedUrlList = refineInputToUrlListWithDuplicatesCheck(urlInput.get(), ignorePlaylists);
 
         CompletableFuture.runAsync(() -> {
 
@@ -204,8 +208,8 @@ public class BatchController implements OnCloseHandler {
 
     // --- Preprocess input ---
 
-    private List<String> refineInputToUrlListWithDuplicatesCheck(String initialInput) {
-        List<String> initialUrlsList = InputUtils.toUrlList(initialInput);
+    private List<String> refineInputToUrlListWithDuplicatesCheck(String initialInput, boolean ignorePlaylist) {
+         List<String> initialUrlsList = InputUtils.toUrlList(initialInput, ignorePlaylist);
         int duplicatesCount = InputUtils.getDetectedDuplicatesCount(initialUrlsList);
         boolean removeDuplicates = false;
         if (duplicatesCount > 0) removeDuplicates = Dialogs
